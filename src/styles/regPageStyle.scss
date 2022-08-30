@@ -1,0 +1,14 @@
+.regContainer {
+  margin-top: 10ch;
+  border-width: 6px;
+  border-radius: 20px;
+  border-color: aqua;
+  padding: 2ch;
+  border-style: solid;
+  &__form {
+    &__element {
+      align-items: flex-start;
+      padding: 2em;
+    }
+  }
+}
