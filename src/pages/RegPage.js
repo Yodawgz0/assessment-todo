@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from "react-grid-system";
 import "../styles/regPageStyle.scss";
 
 const RegPage = () => {
@@ -7,28 +6,75 @@ const RegPage = () => {
     <div className="regContainer">
       <form className="regContainer__form">
         <div className="regContainer__form__element">
-          Name
-          <input value={0} />
+          <label className="regContainer__form__element__label mandateText">
+            FullName:
+          </label>
+          <input
+            className="regContainer__form__element__input"
+            type="text"
+            name="FullName"
+            id="FullName"
+          />
         </div>
         <div className="regContainer__form__element">
-          UserName
-          <input value={0} />
+          <label className="regContainer__form__element__label mandateText">
+            UserName:
+          </label>
+          <input
+            className="regContainer__form__element__input "
+            type="text"
+            name="UserName"
+            id="UserName"
+            required
+          />
         </div>
         <div className="regContainer__form__element">
-          E-Mail
-          <input value={0} />
+          <label className="regContainer__form__element__label mandateText">
+            E-Mail:
+          </label>
+          <input
+            className="regContainer__form__element__input"
+            type="text"
+            name="E-Mail"
+            id="E-Mail"
+            required
+          />
         </div>
         <div className="regContainer__form__element">
-          Contact Number
-          <input value={0} />
+          <label className="regContainer__form__element__label">
+            Contact Number:
+          </label>
+          <input
+            className="regContainer__form__element__input"
+            type="text"
+            name="Contact Number"
+            id="Contact Number"
+            required
+          />
         </div>
         <div className="regContainer__form__element">
-          Password
-          <input value={0} />
+          <label className="regContainer__form__element__label mandateText">
+            Password:
+          </label>
+          <input
+            className="regContainer__form__element__input"
+            type="text"
+            name="Password"
+            id="Password"
+            required
+          />
         </div>
         <div className="regContainer__form__element">
-          Profile Image
-          <input value={0} />
+          <label className="regContainer__form__element__label">
+            Profile Image:
+          </label>
+          <input
+            className="regContainer__form__element__input"
+            type="text"
+            name="Profile Image"
+            id="Profile Image"
+            required
+          />
         </div>
       </form>
     </div>
