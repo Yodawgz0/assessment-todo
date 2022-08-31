@@ -1,0 +1,22 @@
+.logIn {
+  .logIn__Heading {
+    color: white;
+    font-size: xx-large;
+    margin-top: 5rem;
+  }
+  .logIn__Container {
+    &__form {
+      flex-direction: column;
+      &__element {
+        display: flex;
+        justify-content: space-between;
+        padding: 2em;
+        &__label {
+          color: aqua;
+          font-size: large;
+          padding-right: 1.5em;
+        }
+      }
+    }
+  }
+}

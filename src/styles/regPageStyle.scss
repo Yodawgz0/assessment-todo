@@ -6,6 +6,7 @@
   padding: 2ch;
   border-style: solid;
   color: #55acee;
+  margin-left: 25%;
   &__form {
     flex-direction: column;
 
@@ -63,4 +64,10 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.regContainer__LogIn_button {
+  margin-left: 20%;
+  margin-top: 2%;
+  margin-right: 2%;
 }
