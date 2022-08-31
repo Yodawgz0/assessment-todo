@@ -1,81 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/regPageStyle.scss";
+import RegInput from "../components/RegPage/RegInput";
 
 const RegPage = () => {
+  const [formVals, setFormVals] = useState({
+    FullName: "",
+    UserName: "",
+    Email: "",
+    ContactNo: "",
+    Password: "",
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formVals);
+  };
   return (
     <div className="regContainer">
-      <form className="regContainer__form">
-        <div className="regContainer__form__element">
-          <label className="regContainer__form__element__label mandateText">
-            FullName:
-          </label>
-          <input
-            className="regContainer__form__element__input"
-            type="text"
-            name="FullName"
-            id="FullName"
-          />
-        </div>
-        <div className="regContainer__form__element">
-          <label className="regContainer__form__element__label mandateText">
-            UserName:
-          </label>
-          <input
-            className="regContainer__form__element__input "
-            type="text"
-            name="UserName"
-            id="UserName"
-            required
-          />
-        </div>
-        <div className="regContainer__form__element">
-          <label className="regContainer__form__element__label mandateText">
-            E-Mail:
-          </label>
-          <input
-            className="regContainer__form__element__input"
-            type="text"
-            name="E-Mail"
-            id="E-Mail"
-            required
-          />
-        </div>
-        <div className="regContainer__form__element">
-          <label className="regContainer__form__element__label">
-            Contact Number:
-          </label>
-          <input
-            className="regContainer__form__element__input"
-            type="text"
-            name="Contact Number"
-            id="Contact Number"
-            required
-          />
-        </div>
-        <div className="regContainer__form__element">
-          <label className="regContainer__form__element__label mandateText">
-            Password:
-          </label>
-          <input
-            className="regContainer__form__element__input"
-            type="text"
-            name="Password"
-            id="Password"
-            required
-          />
-        </div>
+      <form className="regContainer__form" onSubmit={handleSubmit}>
+        <RegInput
+          title="FullName"
+          inputkey="FullName"
+          formVals={formVals}
+          setFormVals={setFormVals}
+          mandateText={true}
+          pattern="[A-Za-z]"
+        />
+        <RegInput
+          title="UserName"
+          formVals={formVals}
+          setFormVals={setFormVals}
+          mandateText={true}
+        />
+        <RegInput
+          title="Email"
+          formVals={formVals}
+          setFormVals={setFormVals}
+          mandateText={true}
+          pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+        />
+        <RegInput
+          title="ContactNo"
+          formVals={formVals}
+          type="number"
+          setFormVals={setFormVals}
+          mandateText={false}
+          pattern="[\d]{10}"
+        />
+        <RegInput
+          title="Password"
+          formVals={formVals}
+          setFormVals={setFormVals}
+          mandateText={true}
+          type="Password"
+        />
         <div className="regContainer__form__element">
           <label className="regContainer__form__element__label">
             Profile Image:
           </label>
           <input
+            accept="image/*, application/pdf"
             className="regContainer__form__element__input"
-            type="text"
-            name="Profile Image"
             id="Profile Image"
-            required
+            type="file"
+            disabled={false}
+            name="Profile Image"
           />
         </div>
+        <button className="regContainer__form__submitButton">
+          <span className="regContainer__form__submitButton__text">
+            Register
+          </span>
+        </button>
       </form>
     </div>
   );
