@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/regPageStyle.scss";
 import RegInput from "../components/RegPage/RegInput";
-
 const RegPage = () => {
   const [formVals, setFormVals] = useState({
     FullName: "",
@@ -13,7 +12,11 @@ const RegPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formVals);
+    if (localStorage.getItem(formVals.UserName)) {
+      alert("User Already Exists with This, Please Login!!");
+    } else {
+      localStorage.setItem(formVals.UserName, JSON.stringify(formVals));
+    }
   };
   return (
     <div className="regContainer">
@@ -24,7 +27,7 @@ const RegPage = () => {
           formVals={formVals}
           setFormVals={setFormVals}
           mandateText={true}
-          pattern="[A-Za-z]"
+          pattern="[A-Za-z]*"
         />
         <RegInput
           title="UserName"
@@ -59,7 +62,7 @@ const RegPage = () => {
             Profile Image:
           </label>
           <input
-            accept="image/*, application/pdf"
+            accept="image/*"
             className="regContainer__form__element__input"
             id="Profile Image"
             type="file"
