@@ -25,6 +25,7 @@ export default function RegInput({
         name={title}
         id={title}
         maxLength="30"
+        minLength={type === "Password" ? "8" : "3"}
         pattern={pattern}
         required={mandateText}
         value={formVals[title]}
