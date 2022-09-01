@@ -4,33 +4,45 @@ import { useNavigate } from "react-router-dom";
 
 export default function LogInPage() {
   const [loginVals, setLoginVals] = useState({
-    UserName: "",
-    Password: "",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
-    console.log(loginVals.UserName);
-    if (localStorage.getItem(loginVals.UserName)) {
-      const creds = JSON.parse(localStorage.getItem(loginVals.UserName));
-      if (creds.Password === loginVals.Password) {
-        alert("Login SuccessFul!");
-        localStorage.setItem("sessionKey", loginVals.UserName);
-        console.log(localStorage.getItem("sessionKey"));
-        navigate("/DashBoard");
-      } else {
-        alert("Invalid Password!");
-        setLoginVals({
-          UserName: "",
-          Password: "",
-        });
-      }
-    } else {
-      alert("Please Register First!!");
-      navigate("/Registration");
-    }
+    let userHeader = new Headers();
+
+    userHeader.append("Content-Type", "application/json");
+    const userDetails = JSON.stringify(loginVals);
+    const requestOptions = {
+      method: "POST",
+      headers: userHeader,
+      body: userDetails,
+      redirect: "follow",
+    };
+    await fetch(
+      "https://api-nodejs-todolist.herokuapp.com/user/login",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        if (result.includes("Unable to login")) {
+          alert(result);
+        } else {
+          sessionStorage.setItem("sessionkey", JSON.parse(result).token);
+          navigate(0);
+          navigate("/DashBoard");
+        }
+      })
+      .catch((error) => {
+        alert("Something Went Wrong!!");
+        console.log(error);
+      });
   }
+  const handleRegdirect = () => {
+    navigate("/Registration");
+  };
   return (
     <div className="logIn">
       <h3 className="logIn__Heading">Welcome! Please Login!</h3>
@@ -40,18 +52,18 @@ export default function LogInPage() {
             <label
               className={"logIn__Container__form__element__label mandateText"}
             >
-              UserName:
+              Email:
             </label>
             <input
               className="regContainer__form__element__input"
               type="text"
-              name="UserName"
-              id="UserName"
+              name="Email"
+              id="Email"
               maxLength="30"
               required
-              value={loginVals["UserName"]}
+              value={loginVals["Email"]}
               onChange={(e) =>
-                setLoginVals({ ...loginVals, UserName: e.target.value })
+                setLoginVals({ ...loginVals, email: e.target.value })
               }
             />
           </div>
@@ -67,7 +79,7 @@ export default function LogInPage() {
               required
               value={loginVals["Password"]}
               onChange={(e) =>
-                setLoginVals({ ...loginVals, Password: e.target.value })
+                setLoginVals({ ...loginVals, password: e.target.value })
               }
             />
           </div>
@@ -79,6 +91,14 @@ export default function LogInPage() {
             </button>
           </div>
         </form>
+        <button
+          className="regContainer__form__submitButton regdirect_button"
+          onClick={handleRegdirect}
+        >
+          <span className="regContainer__form__submitButton__text">
+            Register
+          </span>
+        </button>
       </div>
     </div>
   );

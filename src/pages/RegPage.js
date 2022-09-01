@@ -1,43 +1,67 @@
 import React, { useState } from "react";
 import "../styles/regPageStyle.scss";
 import RegInput from "../components/RegPage/RegInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const RegPage = () => {
   const [formVals, setFormVals] = useState({
-    FullName: "",
-    UserName: "",
-    Email: "",
+    name: "",
+    Username: "",
+    email: "",
     ContactNo: "",
-    Password: "",
+    password: "",
   });
-
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (localStorage.getItem(formVals.UserName)) {
-      alert("User Already Exists with This, Please Login!!");
-    } else {
-      localStorage.setItem(formVals.UserName, JSON.stringify(formVals));
-    }
-  };
+    let userHeader = new Headers();
+    userHeader.append("Content-Type", "application/json");
+    const userDetails = JSON.stringify(formVals);
+    const requestOptions = {
+      method: "POST",
+      headers: userHeader,
+      body: userDetails,
+      redirect: "follow",
+    };
+    await fetch(
+      "https://api-nodejs-todolist.herokuapp.com/user/register",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        if (result.includes("E11000")) {
+          alert("user already exists! Please login!");
+          navigate("/LogIn");
+        } else {
+          sessionStorage.setItem("sessionkey", JSON.parse(result).token);
+          navigate(0);
+          navigate("/DashBoard");
+        }
+      })
+      .catch((error) => {
+        alert("Something Went Wrong!!");
+        console.log(error);
+      });
+  }
+
   return (
     <>
       <div className="regContainer">
         <form className="regContainer__form" onSubmit={handleSubmit}>
           <RegInput
-            title="FullName"
+            title="name"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
             pattern="[A-Za-z]*"
           />
           <RegInput
-            title="UserName"
+            title="Username"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
           />
           <RegInput
-            title="Email"
+            title="email"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
@@ -52,7 +76,7 @@ const RegPage = () => {
             pattern="[\d]{10}"
           />
           <RegInput
-            title="Password"
+            title="password"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
