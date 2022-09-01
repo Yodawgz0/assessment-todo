@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import RegPage from "./pages/RegPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LogInPage from "./pages/LogInPage";
@@ -8,11 +8,20 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/Registration" element={<RegPage />} />
+        <Route
+          path="/Registration"
+          element={
+            sessionStorage.getItem("sessionkey") ? (
+              <Navigate replace to="/DashBoard" />
+            ) : (
+              <RegPage />
+            )
+          }
+        />
         <Route
           path="/LogIn"
           element={
-            localStorage.getItem("sessionKey") ? (
+            sessionStorage.getItem("sessionkey") ? (
               <Navigate replace to="/DashBoard" />
             ) : (
               <LogInPage />
@@ -22,7 +31,7 @@ function App() {
         <Route
           path="/DashBoard"
           element={
-            localStorage.getItem("sessionKey") ? (
+            sessionStorage.getItem("sessionkey") ? (
               <DashboardPage />
             ) : (
               <Navigate replace to="/LogIn" />
