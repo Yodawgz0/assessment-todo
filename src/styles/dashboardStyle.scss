@@ -1,0 +1,13 @@
+.dashBoard__Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .dashBoard_logout_button {
+    margin-top: 2em;
+    margin-left: 80vw;
+  }
+  &__Header {
+    color: #1da1f2;
+    font-size: 6ch;
+  }
+}
