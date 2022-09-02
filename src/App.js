@@ -6,32 +6,44 @@ import DashboardPage from "./pages/DashboardPage";
 import TaskMainPage from "./pages/TaskMainPage";
 
 function App() {
-  const isAuthencated = sessionStorage.getItem("sessionkey");
+  const isAuthenticated = sessionStorage.getItem("sessionkey");
   return (
     <div className="App">
       <Routes>
         <Route
           path="/Registration"
           element={
-            isAuthencated ? <Navigate replace to="/DashBoard" /> : <RegPage />
+            isAuthenticated ? <Navigate replace to="/DashBoard" /> : <RegPage />
           }
         />
         <Route
           path="/LogIn"
           element={
-            isAuthencated ? <Navigate replace to="/DashBoard" /> : <LogInPage />
+            isAuthenticated ? (
+              <Navigate replace to="/DashBoard" />
+            ) : (
+              <LogInPage />
+            )
           }
         />
         <Route
           path="/DashBoard"
           element={
-            isAuthencated ? <DashboardPage /> : <Navigate replace to="/LogIn" />
+            isAuthenticated ? (
+              <DashboardPage />
+            ) : (
+              <Navigate replace to="/LogIn" />
+            )
           }
         />
         <Route
           path="/taskPage"
           element={
-            isAuthencated ? <TaskMainPage /> : <Navigate replace to="/LogIn" />
+            isAuthenticated ? (
+              <TaskMainPage />
+            ) : (
+              <Navigate replace to="/LogIn" />
+            )
           }
         />
       </Routes>

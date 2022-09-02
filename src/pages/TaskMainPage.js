@@ -9,7 +9,6 @@ export default function TaskMainPage() {
   const [todoTaskList, setTodoTaskList] = useState([]);
   const [renderEditDelete, setRenderEditDelete] = useState("");
   const [columns, setColumns] = useState([]);
-  const [trashAppear, setTrashAppear] = useState(false);
   const columnsSet = ["Backlog", "Todo", "Ongoing", "Completed"];
 
   const handleDeleteTask = async (itemDetails) => {
@@ -112,7 +111,6 @@ export default function TaskMainPage() {
           element.taskStage = `${parseInt(element.taskStage) - 1}`;
         }
       });
-      console.log(columns);
       setColumns(columns);
     }
   };
@@ -175,10 +173,8 @@ export default function TaskMainPage() {
                                           ...provided.draggableProps.style,
                                         }}
                                       >
-                                        {snapshot.isDragging
-                                          ? setTrashAppear(true)
-                                          : setTrashAppear(false)}
                                         {item.taskName}
+
                                         <DraggableFeatures
                                           itemDetails={item.id}
                                           itemStage={item.taskStage}
@@ -214,31 +210,23 @@ export default function TaskMainPage() {
                 </span>
               </button>
             </Link>
-            <Droppable droppableId={`${9}`} key={9}>
-              {(provided, snapshot) => {
-                return (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={{
-                      marginTop: "300%",
-                    }}
-                  >
-                    <BsFillTrashFill
-                      style={{
-                        color: snapshot.isDraggingOver
-                          ? "red"
-                          : trashAppear
-                          ? "white"
-                          : "#14171A",
-                        height: 30,
-                        width: 30,
-                      }}
-                    />
-                  </div>
-                );
-              }}
-            </Droppable>
+            <div style={{ marginTop: "400%" }}>
+              <Droppable droppableId={`${9}`} key={9}>
+                {(provided, snapshot) => {
+                  return (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      <BsFillTrashFill
+                        style={{
+                          color: snapshot.isDraggingOver ? "red" : "white",
+                          height: 30,
+                          width: 30,
+                        }}
+                      />
+                    </div>
+                  );
+                }}
+              </Droppable>
+            </div>
           </div>
         </DragDropContext>
       </div>
