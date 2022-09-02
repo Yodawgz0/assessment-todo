@@ -28,8 +28,10 @@ export default function RegInput({
         minLength={type === "Password" ? "8" : "3"}
         pattern={pattern}
         required={mandateText}
-        value={formVals[title]}
-        onChange={(e) => setFormVals({ ...formVals, [title]: e.target.value })}
+        value={formVals[title.toLowerCase()]}
+        onChange={(e) =>
+          setFormVals({ ...formVals, [title.toLowerCase()]: e.target.value })
+        }
       />
     </div>
   );

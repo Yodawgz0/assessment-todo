@@ -59,8 +59,9 @@ export default function LogInPage() {
               type="text"
               name="Email"
               id="Email"
-              maxLength="30"
+              minLength="7"
               required
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               value={loginVals["Email"]}
               onChange={(e) =>
                 setLoginVals({ ...loginVals, email: e.target.value })
@@ -76,6 +77,7 @@ export default function LogInPage() {
               type="password"
               name="Password"
               id="Password"
+              minLength="8"
               required
               value={loginVals["Password"]}
               onChange={(e) =>
