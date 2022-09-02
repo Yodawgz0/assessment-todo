@@ -118,7 +118,7 @@ export default function TaskMainPage() {
                         }}
                       >
                         {columns.map((item, indexTask) => {
-                          return item.taskStage === indexColumn + "" ? (
+                          return item.taskStage === `${indexColumn}` ? (
                             <div className="todoMgmt_Container__columnsContainer__column__dragElement">
                               <Draggable
                                 key={indexTask}

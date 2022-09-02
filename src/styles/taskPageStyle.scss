@@ -10,9 +10,12 @@
     margin-top: 2rem;
     &__column {
       margin: 1em;
-
+      .todoMgmt__Trash {
+        margin-top: 100%;
+      }
       &__dragElement {
         padding: 0.5em;
+        width: 40 !important;
       }
     }
   }
