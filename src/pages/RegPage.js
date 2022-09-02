@@ -48,7 +48,7 @@ const RegPage = () => {
       <div className="regContainer">
         <form className="regContainer__form" onSubmit={handleSubmit}>
           <RegInput
-            title="name"
+            title="Name"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
@@ -61,7 +61,7 @@ const RegPage = () => {
             mandateText={true}
           />
           <RegInput
-            title="email"
+            title="Email"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
@@ -76,7 +76,7 @@ const RegPage = () => {
             pattern="[\d]{10}"
           />
           <RegInput
-            title="password"
+            title="Password"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
