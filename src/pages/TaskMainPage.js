@@ -3,10 +3,13 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/taskPageStyle.scss";
 import DraggableFeatures from "../components/taskMgmtPage/DraggableFeatures";
 import { Link } from "react-router-dom";
+import { BsFillTrashFill } from "react-icons/bs";
+
 export default function TaskMainPage() {
   const [todoTaskList, setTodoTaskList] = useState([]);
   const [renderEditDelete, setRenderEditDelete] = useState("");
   const [columns, setColumns] = useState([]);
+  const [trashAppear, setTrashAppear] = useState(false);
   const columnsSet = ["Backlog", "Todo", "Ongoing", "Completed"];
 
   const handleDeleteTask = async (itemDetails) => {
@@ -78,8 +81,9 @@ export default function TaskMainPage() {
       columns.forEach((element) => {
         if (element.taskName === draggableId) {
           element.taskStage = destination.droppableId;
-          if (element.taskStage === "9") {
+          if (destination.droppableId === "9") {
             handleDeleteTask(element.id);
+            return;
           }
         }
       });
@@ -171,6 +175,9 @@ export default function TaskMainPage() {
                                           ...provided.draggableProps.style,
                                         }}
                                       >
+                                        {snapshot.isDragging
+                                          ? setTrashAppear(true)
+                                          : setTrashAppear(false)}
                                         {item.taskName}
                                         <DraggableFeatures
                                           itemDetails={item.id}
@@ -214,14 +221,21 @@ export default function TaskMainPage() {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={{
-                      background: snapshot.isDraggingOver ? "red" : "black",
-                      padding: 2,
-                      width: 50,
-                      minHeight: 50,
-                      borderRadius: 10,
                       marginTop: "300%",
                     }}
-                  ></div>
+                  >
+                    <BsFillTrashFill
+                      style={{
+                        color: snapshot.isDraggingOver
+                          ? "red"
+                          : trashAppear
+                          ? "white"
+                          : "#14171A",
+                        height: 30,
+                        width: 30,
+                      }}
+                    />
+                  </div>
                 );
               }}
             </Droppable>
