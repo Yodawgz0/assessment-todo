@@ -7,7 +7,7 @@ export default function DraggableFeatures({
   setRenderEditDelete,
   onArrowSelect,
 }) {
-  const handleDeleteTask = async () => {
+  const handleDeleteTask = async (itemDetails) => {
     const deleteTaskHeader = new Headers();
     deleteTaskHeader.append(
       "Authorization",
@@ -26,7 +26,7 @@ export default function DraggableFeatures({
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => setRenderEditDelete(itemDetails))
+      .then(() => setRenderEditDelete(itemDetails))
       .catch((error) => console.log("error", error));
   };
 

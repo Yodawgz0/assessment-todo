@@ -60,7 +60,7 @@ export default function DashboardPage() {
       "https://api-nodejs-todolist.herokuapp.com/user/logout",
       requestOptions
     )
-      .then((response) => response.text())
+      .then((response) => response)
       .then((result) => {
         sessionStorage.removeItem("sessionkey");
         navigate(0);

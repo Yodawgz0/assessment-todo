@@ -1,21 +1,17 @@
 .todoMgmt_Container {
   display: flex;
   justify-content: center;
-  height: 80%;
   color: white;
   &__columnsContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 2rem;
+
     &__column {
-      margin: 1em;
-      .todoMgmt__Trash {
-        margin-top: 100%;
-      }
+      margin: 0.5em;
       &__dragElement {
         padding: 0.5em;
-        width: 40 !important;
       }
     }
   }

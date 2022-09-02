@@ -9,6 +9,29 @@ export default function TaskMainPage() {
   const [columns, setColumns] = useState([]);
   const columnsSet = ["Backlog", "Todo", "Ongoing", "Completed"];
 
+  const handleDeleteTask = async (itemDetails) => {
+    const deleteTaskHeader = new Headers();
+    deleteTaskHeader.append(
+      "Authorization",
+      "Bearer " + sessionStorage.getItem("sessionkey")
+    );
+    deleteTaskHeader.append("Content-Type", "application/json");
+
+    let requestOptions = {
+      method: "DELETE",
+      headers: deleteTaskHeader,
+      redirect: "follow",
+    };
+
+    await fetch(
+      "https://api-nodejs-todolist.herokuapp.com/task/" + itemDetails,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => setRenderEditDelete(itemDetails))
+      .catch((error) => console.log("error", error));
+  };
+
   async function fetchtodoList() {
     const fetchCountTaskHeader = new Headers();
     fetchCountTaskHeader.append(
@@ -55,6 +78,9 @@ export default function TaskMainPage() {
       columns.forEach((element) => {
         if (element.taskName === draggableId) {
           element.taskStage = destination.droppableId;
+          if (element.taskStage === "9") {
+            handleDeleteTask(element.id);
+          }
         }
       });
       setColumns(columns);
@@ -73,7 +99,6 @@ export default function TaskMainPage() {
       columns.forEach((element) => {
         if (element.id === itemID) {
           element.taskStage = `${parseInt(element.taskStage) + 1}`;
-          console.log(element.taskStage);
         }
       });
       setColumns(columns);
@@ -108,6 +133,7 @@ export default function TaskMainPage() {
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
+                          className="todoMgmt_Container__columnsContainer__column"
                           style={{
                             background: snapshot.isDraggingOver
                               ? "lightblue"
@@ -172,13 +198,36 @@ export default function TaskMainPage() {
               </div>
             );
           })}
+          <div>
+            {" "}
+            <Link to="/Dashboard">
+              <button className=" mt-2 me-3 regContainer__form__submitButton ">
+                <span className="regContainer__form__submitButton__text">
+                  Back
+                </span>
+              </button>
+            </Link>
+            <Droppable droppableId={`${9}`} key={9}>
+              {(provided, snapshot) => {
+                return (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{
+                      background: snapshot.isDraggingOver ? "red" : "black",
+                      padding: 2,
+                      width: 50,
+                      minHeight: 50,
+                      borderRadius: 10,
+                      marginTop: "300%",
+                    }}
+                  ></div>
+                );
+              }}
+            </Droppable>
+          </div>
         </DragDropContext>
       </div>
-      <Link to="/Dashboard">
-        <button className=" mt-2 regContainer__form__submitButton ">
-          <span className="regContainer__form__submitButton__text">Back</span>
-        </button>
-      </Link>
     </>
   );
 }
