@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/taskPageStyle.scss";
 import DraggableFeatures from "../components/taskMgmtPage/DraggableFeatures";
-
+import { Link } from "react-router-dom";
 export default function TaskMainPage() {
   const [todoTaskList, setTodoTaskList] = useState([]);
   const [renderEditDelete, setRenderEditDelete] = useState("");
@@ -89,89 +89,96 @@ export default function TaskMainPage() {
   };
 
   return (
-    <div className="todoMgmt_Container">
-      <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-      >
-        {columnsSet.map((column, indexColumn) => {
-          return (
-            <div
-              className="todoMgmt_Container__columnsContainer"
-              key={indexColumn}
-            >
-              <h2>{column}</h2>
-              <div className="todoMgmt_Container__columnsContainer__column">
-                <Droppable droppableId={"" + indexColumn} key={indexColumn}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "lightblue"
-                            : "lightgrey",
-                          padding: 4,
-                          width: 250,
-                          minHeight: 130,
-                          borderRadius: 10,
-                        }}
-                      >
-                        {columns.map((item, indexTask) => {
-                          return item.taskStage === `${indexColumn}` ? (
-                            <div className="todoMgmt_Container__columnsContainer__column__dragElement">
-                              <Draggable
-                                key={indexTask}
-                                draggableId={item.taskName}
-                                index={indexTask}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={{
-                                        borderRadius: 15,
-                                        userSelect: "none",
-                                        padding: 16,
-                                        margin: "0 0 8px 0",
-                                        minHeight: "70px",
-                                        backgroundColor: snapshot.isDragging
-                                          ? "#263B4A"
-                                          : "#1DA1F2",
-                                        color: "white",
-                                        ...provided.draggableProps.style,
-                                      }}
-                                    >
-                                      {item.taskName}
-                                      <DraggableFeatures
-                                        itemDetails={item.id}
-                                        itemStage={item.taskStage}
-                                        setRenderEditDelete={
-                                          setRenderEditDelete
-                                        }
-                                        onArrowSelect={onArrowSelect}
-                                      />
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            </div>
-                          ) : (
-                            <></>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
+    <>
+      <div className="todoMgmt_Container">
+        <DragDropContext
+          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        >
+          {columnsSet.map((column, indexColumn) => {
+            return (
+              <div
+                className="todoMgmt_Container__columnsContainer"
+                key={indexColumn}
+              >
+                <h2>{column}</h2>
+                <div className="todoMgmt_Container__columnsContainer__column">
+                  <Droppable droppableId={"" + indexColumn} key={indexColumn}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? "lightblue"
+                              : "lightgrey",
+                            padding: 4,
+                            width: 250,
+                            minHeight: 130,
+                            borderRadius: 10,
+                          }}
+                        >
+                          {columns.map((item, indexTask) => {
+                            return item.taskStage === `${indexColumn}` ? (
+                              <div className="todoMgmt_Container__columnsContainer__column__dragElement">
+                                <Draggable
+                                  key={indexTask}
+                                  draggableId={item.taskName}
+                                  index={indexTask}
+                                >
+                                  {(provided, snapshot) => {
+                                    return (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={{
+                                          borderRadius: 15,
+                                          userSelect: "none",
+                                          padding: 16,
+                                          margin: "0 0 8px 0",
+                                          minHeight: "70px",
+                                          backgroundColor: snapshot.isDragging
+                                            ? "#263B4A"
+                                            : "#1DA1F2",
+                                          color: "white",
+                                          ...provided.draggableProps.style,
+                                        }}
+                                      >
+                                        {item.taskName}
+                                        <DraggableFeatures
+                                          itemDetails={item.id}
+                                          itemStage={item.taskStage}
+                                          setRenderEditDelete={
+                                            setRenderEditDelete
+                                          }
+                                          onArrowSelect={onArrowSelect}
+                                        />
+                                      </div>
+                                    );
+                                  }}
+                                </Draggable>
+                              </div>
+                            ) : (
+                              <></>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      );
+                    }}
+                  </Droppable>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </DragDropContext>
-    </div>
+            );
+          })}
+        </DragDropContext>
+      </div>
+      <Link to="/Dashboard">
+        <button className=" mt-2 regContainer__form__submitButton ">
+          <span className="regContainer__form__submitButton__text">Back</span>
+        </button>
+      </Link>
+    </>
   );
 }
