@@ -5,14 +5,19 @@ import Modal from "react-bootstrap/Modal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { useSelector, useDispatch } from "react-redux";
+import { addTask } from "../../reducers/todoTasksSlice";
+
 const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
+  const dispatchAddTask = useDispatch();
+  const todoStageValues = useSelector((state) => state.todoStageConst.value);
   const dayToday = new Date();
   const [addTaskVals, setaddTaskVals] = useState({
     taskName: "",
     taskDetails: "",
     priority: "",
     taskStage: "",
-    deadline: dayToday,
+    deadline: [dayToday],
   });
 
   const [isLoadingAdd, setisLoadingAdd] = useState(false);
@@ -20,39 +25,10 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
     setShowAddTaskPop(false);
   };
 
-  const handleAddTaskApi = async (event) => {
+  const handleAddTaskApi = (event) => {
     event.preventDefault();
     setisLoadingAdd(true);
-    let addTaskHeader = new Headers();
-    addTaskHeader.append(
-      "Authorization",
-      "Bearer " + sessionStorage.getItem("sessionkey")
-    );
-    addTaskHeader.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      description: JSON.stringify({ addTaskVals }),
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: addTaskHeader,
-      body: raw,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/task",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success === true) {
-          alert("Task is Added Successfully");
-        }
-      })
-      .catch((error) => console.log("error", error));
-
+    dispatchAddTask(addTask(addTaskVals));
     handleClosePop();
   };
 
@@ -95,7 +71,7 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
             </Form.Group>
             <Form.Select
               className="mb-5"
-              aria-label="Default select example"
+              aria-label="priority-task"
               value={addTaskVals.priority}
               required
               onChange={(e) =>
@@ -110,7 +86,7 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
 
             <Form.Select
               className="mb-5"
-              aria-label="Default select example"
+              aria-label="taskStage-task"
               value={addTaskVals.taskStage}
               required
               onChange={(e) =>
@@ -118,19 +94,25 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
               }
             >
               <option value="">Select Stage of Task</option>
-              <option value="0">Backlog</option>
-              <option value="1">ToDo</option>
-              <option value="2">OnGoing</option>
-              <option value="3">Completed</option>
+              {todoStageValues.map((element, index) => {
+                return (
+                  <option key={index} value={index}>
+                    {element}
+                  </option>
+                );
+              })}
             </Form.Select>
             <Form.Group className="mb-3 d-flex flex-row">
               <Form.Label>Deadline:</Form.Label>
               <DatePicker
                 className="ms-3"
-                selected={addTaskVals.deadline}
-                value={addTaskVals.deadline}
+                selected={addTaskVals.deadline[0]}
+                value={addTaskVals.deadline[0]}
                 onChange={(date) =>
-                  setaddTaskVals({ ...addTaskVals, deadline: date })
+                  setaddTaskVals({
+                    ...addTaskVals,
+                    deadline: [date + ""],
+                  })
                 }
               />
             </Form.Group>

@@ -4,36 +4,13 @@ import "../../styles/taskPageStyle.scss";
 export default function DraggableFeatures({
   itemDetails,
   itemStage,
-  setRenderEditDelete,
   onArrowSelect,
+  handleDeleteTask,
 }) {
-  const handleDeleteTask = async (itemDetails) => {
-    const deleteTaskHeader = new Headers();
-    deleteTaskHeader.append(
-      "Authorization",
-      "Bearer " + sessionStorage.getItem("sessionkey")
-    );
-    deleteTaskHeader.append("Content-Type", "application/json");
-
-    let requestOptions = {
-      method: "DELETE",
-      headers: deleteTaskHeader,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/task/" + itemDetails,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then(() => setRenderEditDelete(itemDetails))
-      .catch((error) => console.log("error", error));
-  };
-
   return (
     <div className="mt-3">
       <button className="me-1">Edit</button>
-      <button className="me-1" onClick={handleDeleteTask}>
+      <button className="me-1" onClick={() => handleDeleteTask(itemDetails)}>
         Delete
       </button>
       <button

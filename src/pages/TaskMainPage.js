@@ -1,126 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/taskPageStyle.scss";
 import DraggableFeatures from "../components/taskMgmtPage/DraggableFeatures";
 import { Link } from "react-router-dom";
 import { BsFillTrashFill } from "react-icons/bs";
-
+import { useSelector, useDispatch } from "react-redux";
+import { changeStageTask, delTask } from "../reducers/todoTasksSlice";
 export default function TaskMainPage() {
-  const [todoTaskList, setTodoTaskList] = useState([]);
-  const [renderEditDelete, setRenderEditDelete] = useState("");
-  const [columns, setColumns] = useState([]);
-  const columnsSet = ["Backlog", "Todo", "Ongoing", "Completed"];
-
-  const handleDeleteTask = async (itemDetails) => {
-    const deleteTaskHeader = new Headers();
-    deleteTaskHeader.append(
-      "Authorization",
-      "Bearer " + sessionStorage.getItem("sessionkey")
-    );
-    deleteTaskHeader.append("Content-Type", "application/json");
-
-    let requestOptions = {
-      method: "DELETE",
-      headers: deleteTaskHeader,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/task/" + itemDetails,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => setRenderEditDelete(itemDetails))
-      .catch((error) => console.log("error", error));
+  const columnsSet = useSelector((state) => state.todoStageConst.value);
+  const dispatchtaskMainPage = useDispatch();
+  const handleDeleteTask = (itemDetails) => {
+    dispatchtaskMainPage(delTask(itemDetails));
   };
+  const todoTaskList = useSelector((state) => state.todotaskHandler.value);
 
-  async function fetchtodoList() {
-    const fetchCountTaskHeader = new Headers();
-    fetchCountTaskHeader.append(
-      "Authorization",
-      sessionStorage.getItem("sessionkey")
-    );
-    fetchCountTaskHeader.append("Content-Type", "application/json");
-
-    const requestOptionsTask = {
-      method: "GET",
-      headers: fetchCountTaskHeader,
-      redirect: "follow",
-    };
-    let combinedTaskData = [];
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/task",
-      requestOptionsTask
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        result.data.forEach((element) => {
-          const parsedData = JSON.parse(element.description);
-          parsedData.addTaskVals["id"] = element._id;
-          combinedTaskData.push(parsedData.addTaskVals);
-        });
-        setTodoTaskList(combinedTaskData);
-      })
-      .catch((error) => console.log("error", error));
-  }
-
-  useEffect(() => {
-    fetchtodoList();
-  }, [renderEditDelete]);
-  useEffect(() => {
-    setColumns(todoTaskList);
-  }, [todoTaskList]);
-  useEffect(() => {}, [columns]);
-
-  const onDragEnd = (result, columns, setColumns) => {
+  useEffect(() => {}, [todoTaskList]);
+  const onArrowSelect = (arrowType, itemID) => {
+    todoTaskList.forEach((element) => {
+      if (element.taskName === itemID) {
+        dispatchtaskMainPage(
+          changeStageTask({
+            taskName: element.taskName,
+            newStage:
+              arrowType === "next"
+                ? `${parseInt(element.taskStage) + 1}`
+                : `${parseInt(element.taskStage) - 1}`,
+          })
+        );
+      }
+    });
+  };
+  const onDragEnd = (result) => {
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
 
     if (source.droppableId !== destination.droppableId) {
-      columns.forEach((element) => {
+      todoTaskList.forEach((element) => {
         if (element.taskName === draggableId) {
-          element.taskStage = destination.droppableId;
           if (destination.droppableId === "9") {
-            handleDeleteTask(element.id);
+            handleDeleteTask(element.taskName);
             return;
           }
+          dispatchtaskMainPage(
+            changeStageTask({
+              taskName: element.taskName,
+              newStage: destination.droppableId,
+            })
+          );
         }
       });
-      setColumns(columns);
-    } else {
-      columns.forEach((element) => {
-        if (element.taskName === draggableId) {
-          element.taskStage = destination.droppableId;
-        }
-      });
-      setColumns(columns);
-    }
-  };
-
-  const onArrowSelect = (arrowType, itemID) => {
-    if (arrowType === "next") {
-      columns.forEach((element) => {
-        if (element.id === itemID) {
-          element.taskStage = `${parseInt(element.taskStage) + 1}`;
-        }
-      });
-      setColumns(columns);
-    } else {
-      columns.forEach((element) => {
-        if (element.id === itemID) {
-          element.taskStage = `${parseInt(element.taskStage) - 1}`;
-        }
-      });
-      setColumns(columns);
     }
   };
 
   return (
     <>
       <div className="todoMgmt_Container">
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-        >
+        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
           {columnsSet.map((column, indexColumn) => {
             return (
               <div
@@ -128,11 +63,15 @@ export default function TaskMainPage() {
                 key={indexColumn}
               >
                 <h2>{column}</h2>
-                <div className="todoMgmt_Container__columnsContainer__column">
+                <div
+                  key={indexColumn}
+                  className="todoMgmt_Container__columnsContainer__column"
+                >
                   <Droppable droppableId={"" + indexColumn} key={indexColumn}>
                     {(provided, snapshot) => {
                       return (
                         <div
+                          key={indexColumn}
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           className="todoMgmt_Container__columnsContainer__column"
@@ -146,7 +85,7 @@ export default function TaskMainPage() {
                             borderRadius: 10,
                           }}
                         >
-                          {columns.map((item, indexTask) => {
+                          {todoTaskList.map((item, indexTask) => {
                             return item.taskStage === `${indexColumn}` ? (
                               <div className="todoMgmt_Container__columnsContainer__column__dragElement">
                                 <Draggable
@@ -176,12 +115,10 @@ export default function TaskMainPage() {
                                         {item.taskName}
 
                                         <DraggableFeatures
-                                          itemDetails={item.id}
+                                          itemDetails={item.taskName}
                                           itemStage={item.taskStage}
-                                          setRenderEditDelete={
-                                            setRenderEditDelete
-                                          }
                                           onArrowSelect={onArrowSelect}
+                                          handleDeleteTask={handleDeleteTask}
                                         />
                                       </div>
                                     );

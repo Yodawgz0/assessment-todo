@@ -5,43 +5,15 @@ import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Placeholder from "react-bootstrap/Placeholder";
 import AddTaskPop from "../components/taskMgmtPage/AddTaskPop";
-
+import { useSelector } from "react-redux";
 export default function DashboardPage() {
   const navigate = useNavigate();
 
-  const [todoTask, setTodoTask] = useState(0);
   const [showAddTaskPop, setShowAddTaskPop] = useState(false);
 
   const handleAddTaskPop = () => setShowAddTaskPop(!showAddTaskPop);
 
-  async function fetchCountTask() {
-    const fetchCountTaskHeader = new Headers();
-    fetchCountTaskHeader.append(
-      "Authorization",
-      sessionStorage.getItem("sessionkey")
-    );
-    fetchCountTaskHeader.append("Content-Type", "application/json");
-
-    const requestOptionsTask = {
-      method: "GET",
-      headers: fetchCountTaskHeader,
-      redirect: "follow",
-    };
-    let combinedTaskData = [];
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/task",
-      requestOptionsTask
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        result.data.forEach((element) => {
-          const parsedData = JSON.parse(element.description);
-          combinedTaskData.push(parsedData.addTaskVals);
-        });
-        setTodoTask(combinedTaskData);
-      })
-      .catch((error) => console.log("error", error));
-  }
+  const todoTask = useSelector((state) => state.todotaskHandler.value);
 
   async function handleLogout() {
     let userLogoutHeader = new Headers();
@@ -50,7 +22,7 @@ export default function DashboardPage() {
       "Bearer " + sessionStorage.getItem("sessionkey")
     );
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: userLogoutHeader,
       redirect: "follow",
@@ -68,9 +40,7 @@ export default function DashboardPage() {
       })
       .catch((error) => console.log("error", error));
   }
-  useEffect(() => {
-    fetchCountTask();
-  }, [showAddTaskPop]);
+  useEffect(() => {}, [showAddTaskPop]);
 
   return (
     <div className="dashBoard__Container">
