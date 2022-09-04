@@ -17,7 +17,7 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
     taskDetails: "",
     priority: "",
     taskStage: "",
-    deadline: [dayToday],
+    deadline: dayToday,
   });
 
   const [isLoadingAdd, setisLoadingAdd] = useState(false);
@@ -106,12 +106,12 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
               <Form.Label>Deadline:</Form.Label>
               <DatePicker
                 className="ms-3"
-                selected={addTaskVals.deadline[0]}
-                value={addTaskVals.deadline[0]}
+                selected={addTaskVals.deadline}
+                value={addTaskVals.deadline}
                 onChange={(date) =>
                   setaddTaskVals({
                     ...addTaskVals,
-                    deadline: [date + ""],
+                    deadline: date,
                   })
                 }
               />

@@ -36,9 +36,17 @@ export const todoTaskSlice = createSlice({
         }
       });
     },
+    changeTaskName: (state, action) => {
+      state.value.forEach((element) => {
+        if (element["taskName"] === action.payload.taskName) {
+          element["taskName"] = action.payload.newtaskName;
+        }
+      });
+    },
   },
 });
 
-export const { addTask, delTask, changeStageTask } = todoTaskSlice.actions;
+export const { addTask, delTask, changeStageTask, changeTaskName } =
+  todoTaskSlice.actions;
 
 export default todoTaskSlice.reducer;

@@ -1,20 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/taskPageStyle.scss";
 import DraggableFeatures from "../components/taskMgmtPage/DraggableFeatures";
 import { Link } from "react-router-dom";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import { changeStageTask, delTask } from "../reducers/todoTasksSlice";
+import {
+  changeStageTask,
+  changeTaskName,
+  delTask,
+} from "../reducers/todoTasksSlice";
+
 export default function TaskMainPage() {
   const columnsSet = useSelector((state) => state.todoStageConst.value);
+  const todoTaskList = useSelector((state) => state.todotaskHandler.value);
+  const [showAddTaskPop, setShowAddTaskPop] = useState("");
+  const [editTaskVals, setEditTaskVals] = useState("");
+
+  const handleAddTaskPop = (taskIDval) => {
+    setEditTaskVals("");
+    setShowAddTaskPop(taskIDval);
+  };
   const dispatchtaskMainPage = useDispatch();
   const handleDeleteTask = (itemDetails) => {
     dispatchtaskMainPage(delTask(itemDetails));
   };
-  const todoTaskList = useSelector((state) => state.todotaskHandler.value);
-
-  useEffect(() => {}, [todoTaskList]);
+  const handleEditForm = (oldTaskName, newTaskName) => {
+    dispatchtaskMainPage(
+      changeTaskName({
+        taskName: oldTaskName,
+        newtaskName: newTaskName,
+      })
+    );
+    console.log(todoTaskList);
+  };
+  useEffect(() => {}, [todoTaskList, showAddTaskPop]);
   const onArrowSelect = (arrowType, itemID) => {
     todoTaskList.forEach((element) => {
       if (element.taskName === itemID) {
@@ -115,11 +135,38 @@ export default function TaskMainPage() {
                                         {item.taskName}
 
                                         <DraggableFeatures
-                                          itemDetails={item.taskName}
-                                          itemStage={item.taskStage}
+                                          itemDetails={item}
                                           onArrowSelect={onArrowSelect}
                                           handleDeleteTask={handleDeleteTask}
+                                          handleAddTaskPop={handleAddTaskPop}
                                         />
+                                        {showAddTaskPop === item.taskName ? (
+                                          <div>
+                                            <label className="mt-3">
+                                              Enter task Name
+                                            </label>
+                                            <input
+                                              value={editTaskVals}
+                                              onChange={(e) =>
+                                                setEditTaskVals(e.target.value)
+                                              }
+                                            ></input>
+                                            <button
+                                              disabled={!editTaskVals.length}
+                                              onClick={() =>
+                                                handleEditForm(
+                                                  item.taskName,
+                                                  editTaskVals
+                                                )
+                                              }
+                                              className="mt-1"
+                                            >
+                                              submit
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <></>
+                                        )}
                                       </div>
                                     );
                                   }}
