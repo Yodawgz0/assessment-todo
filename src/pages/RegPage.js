@@ -32,7 +32,7 @@ const RegPage = () => {
           alert("user already exists! Please login!");
           navigate("/LogIn");
         } else {
-          sessionStorage.setItem("sessionkey", JSON.parse(result).token);
+          localStorage.setItem("sessionkey", JSON.parse(result).token);
           navigate(0);
           navigate("/DashBoard");
         }

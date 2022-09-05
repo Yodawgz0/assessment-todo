@@ -30,7 +30,7 @@ export default function LogInPage() {
         if (result.includes("Unable to login")) {
           alert(result);
         } else {
-          sessionStorage.setItem("sessionkey", JSON.parse(result).token);
+          localStorage.setItem("sessionkey", JSON.parse(result).token);
           navigate(0);
           navigate("/DashBoard");
         }

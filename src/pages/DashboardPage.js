@@ -19,7 +19,7 @@ export default function DashboardPage() {
     let userLogoutHeader = new Headers();
     userLogoutHeader.append(
       "Authorization",
-      "Bearer " + sessionStorage.getItem("sessionkey")
+      "Bearer " + localStorage.getItem("sessionkey")
     );
 
     const requestOptions = {
@@ -34,7 +34,7 @@ export default function DashboardPage() {
     )
       .then((response) => response)
       .then((result) => {
-        sessionStorage.removeItem("sessionkey");
+        localStorage.removeItem("sessionkey");
         navigate(0);
         navigate("/LogIn");
       })

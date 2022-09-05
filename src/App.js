@@ -6,7 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import TaskMainPage from "./pages/TaskMainPage";
 
 function App() {
-  const isAuthenticated = sessionStorage.getItem("sessionkey");
+  const isAuthenticated = localStorage.getItem("sessionkey");
   return (
     <div className="App">
       <Routes>
