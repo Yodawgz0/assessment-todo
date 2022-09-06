@@ -87,7 +87,10 @@ export default function LogInPage() {
           </div>
           <div className="regContainer__LogIn_button">
             <button className="regContainer__form__submitButton">
-              <span className="regContainer__form__submitButton__text">
+              <span
+                aria-label="LoginButton"
+                className="regContainer__form__submitButton__text"
+              >
                 Log In
               </span>
             </button>
