@@ -95,7 +95,10 @@ const RegPage = () => {
               name="Profile Image"
             />
           </div>
-          <button className="regContainer__form__submitButton">
+          <button
+            aria-label="RegisterButton"
+            className="regContainer__form__submitButton"
+          >
             <span className="regContainer__form__submitButton__text">
               Register
             </span>

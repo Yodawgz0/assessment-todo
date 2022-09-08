@@ -2,7 +2,13 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "http://localhost:3000/LogIn",
+    setupNodeEvents(on, config) {
+      on("task", {
+        async clearUser(sessionkey) {
+          return null;
+        },
+      });
+    },
   },
 
   component: {

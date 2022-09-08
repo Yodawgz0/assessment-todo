@@ -45,6 +45,7 @@ export default function DashboardPage() {
   return (
     <div className="dashBoard__Container">
       <button
+        aria-label="logoutButton"
         className="regContainer__form__submitButton dashBoard_logout_button"
         onClick={handleLogout}
       >
