@@ -1,0 +1,132 @@
+  //const setText = (text) => {
+  //   ReactDOM.render(
+  //     <React.Fragment>
+  //       <h1>{text}</h1>
+  //       {["yo", "hello"].map((element) => {
+  //         return <h>{element}</h>;
+  //       })}
+  //     </React.Fragment>,
+  //     document.getElementById("root")
+  //   );
+  // };
+  
+  const numArr = [1, 2, 3];
+
+  const res2 = numArr.forEach((val, i, arr) => {arr[i] = val * 2});
+  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const person = {
+    name: "A",
+    age: 7,
+    printInfo: function () {
+      console.log(`this is ${this.name}`);
+    }
+  };
+
+  person.printInfo()
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  <input value = {text} onChange={handleText}/>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+export const TryingComponent = () => {
+  const [text, setText] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleText = (e) => {
+    setText(e.target.value);
+  };
+  const ErrMsg = "under 18!";
+
+  useEffect(() => {
+    setError(text < 18);
+  }, [text]);
+
+  return (
+    <>
+      <div>{text}</div>
+      <input value={text} onChange={handleText} />
+      {error ? ErrMsg : null}
+    </>
+  );
+};
+ ####myCallback
+
+function myDisplayer(some) {
+  document.getElementById("demo").innerHTML = some;
+}
+
+function myCalculator(num1, num2, myCallback) {
+  let sum = num1 + num2;
+  myCallback(sum);
+}
+
+myCalculator(5, 5, myDisplayer);
+
+
+
+####################
+  const [users, setUsers] = useState([]);
+  const apiLink = "https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8";
+  useEffect(() => {
+    async function fetchAPi() {
+      await fetch(apiLink)
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          const filteredData = res.filter((value, index, arr) => index > 1);  
+          setUsers(filteredData);
+        })
+        .catch((err) => console.log(err));
+    }
+    fetchAPi();
+  }, []);
+
+  ####################
+  for(var i = 0 ; i<10; i++){
+    setTimeout(function(){
+        console.log(i)
+    },1000)
+    
+    var x = 14
+}
+
+  ####################
+  function product(a){
+    return( function product(b){
+        return a*b
+    })
+}
+
+let c = product(4)(3)
+console.log(c)
+####################
+
+useEffect(()={
+//mount
+,[]})
+useEffect(()={
+//update
+,[something]})
+useEffect(()={
+return()=>{}
+,[]})
+
+
+ const focusPoint = useRef(null);
+  const onClickHandler = () => {
+    focusPoint.current.value =
+      "The quick brown fox jumps over the lazy dog";
+      focusPoint.current.focus();
+###################
+
+
+      function counting(arr){
+    for(let g of  [...new Set(arr)]){
+        let countofEach = arr.filter(x => x==g)
+        console.log(countofEach.length)
+    }
+}
+let arr = [1,2,3,4,1,4,5,3,3] 
+counting(arr)

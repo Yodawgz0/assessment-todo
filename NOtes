@@ -1,0 +1,135 @@
+Browser Doesnt Understand JSX , a transpiler converts it to what Browser Understands in which Render is Used
+
+constructor is used for loading the variables before the page loads before componentDidMount
+
+COMPONENT DID MOUNT , COMPONENT DID UPDATE RENDER CONSTRUCTOR warna useffect khaali . something . return expty
+
+<!-- Redux
+
+mangaing and updating using actions and , it acts like a centralized store where we can store all of the dat
+
+1. Action -> What to do
+2. Reducer -> contains state and the way to do it
+3. store -> Object which holds the state of the application
+4. Function -> createStore() getState disptach()
+
+Components -> dispatch -> Action -> Reducer -> updates State to -> Store -> triggers subsciption -> as a prop it passes it to commponent
+NOTE: We never mutate the original state.
+
+In Action we have Type which tell what to do but not what to do
+action is created by a pure function and has this return object inside it
+
+There can only be one store inw application
+
+State is read only and the only way to change is using the dispatch -->
+
+<!-- hoisting meiin compiler karte waqt assignment ho jata hai uske baad run karte waqt usko mil jata hai par agar access kare toh
+undefined ata hai isiliye and same with functions hai and agar functions ko bhi assign kia toh wahi ho jayga -->
+
+<!-- ES6 -> Let const ,arrow , template string , promise -->
+
+<!-- myPromise.state myPromise.result
+"pending" undefined
+"fulfilled" a result value
+"rejected" an error object -->
+
+<!-- const is used for api key and things that are going to be constant throughout -->
+
+<!-- relative posisition is relative to its positions and changing its surrounding
+absolute position is relative to its parent position -->
+
+<!-- class component has a state and functional component is stateless
+class is having lifecycle and functional component doesnt have a lifecycle -->
+
+<!-- Design pattern is used to create general repeatable solution , that is there to couter specific problem
+it is done using props and Rendering
+
+so what we do is that logic remains same but we modify the original components in order to cater our needs , usko useable component
+like -->
+<!--
+HTML5 doctype is where we tell ki kaunsa version hai for html5 we only have html and 4 ke liye bohot bada sa URL and version number bhi hota hai jiss
+browser ko pata chal jata hai ki kaaunsa verison chal rah ah -->
+
+<!-- CSS3 includes \_>>>> rounded corners, box shadows, RGBA, HSL and HSLA colors, box sizing, Opacity, CSS3 Gradients, transitions, transformations, animations, multi-column layout, flex box, CSS grids, embedded fonts and Responsive web design -->
+
+<!-- BOM , kaise browser se interact karte hai > window object
+jaise var declare kia toh ye window object ka property ban jata h (LET and Const nai karta ) par functions alter ye sab BOM ka part hai -->
+
+<!-- em Relative to the font-size of the element (2em means 2 times the size of the current font)
+ex Relative to the x-height of the current font (rarely used)
+ch Relative to the width of the "0" (zero)
+rem Relative to font-size of the root element
+vw Relative to 1% of the width of the viewport*
+vh Relative to 1% of the height of the viewport*
+vmin Relative to 1% of viewport's* smaller dimension
+vmax Relative to 1% of viewport's* larger dimension -->
+
+<!-- Virual DOM ->
+so it is a javascript dom created where it is a copy of the actual dom
+what react dose is to create a snapshot right before it updates the component and it knows which is actually different .. call diff
+after that it actually updates that only component which is reconilation -->
+
+<!-- so settimeout is it a async function which will go to event loop , since JS is single thread in callstack and make it empty , and sends it to end of the stack -->
+<!-- Advantages of react: virtual dom + server side rendering + integration is easy -->
+
+<!-- The React useCallback Hook returns a memoized callback function -->
+
+<!-- javascript 8 is used by chrome V8 and others have different becuase google made it for themselves as they something to do with open source -->
+
+<!-- There's no such thing as dispatching to a certain reducer. Every time you dispatch an action, all reducer functions are executed. The only way to make sure the right piece of code is executed is to make sure the name of the action type is unique, and is present exactly in one reducer among all. -->
+
+> State is whole store so we have to get the value by getstate
+> mapStatetoProps state=>{const { todos } = state
+> return { todoList: todos.allIds }}
+> mapDisptachtoProps = dispatch=>{
+> addtocarthandler: data => dispatch(addtocart(data))
+> }
+> connect(mapStatetoProps,mapDisptachtoProps)(todolist)
+> The useDispatch and useSelector hooks are alternatives to mapDispatchToProps and mapStateToProps, respectively. The useDispatch hook is used to dispatch an action while useSelector hook is used to get the state from the redux store.
+
+<!-- maintain code quality we have to
+less code, styles different page , make imports better and efficiant -->
+
+<!-- eventBubbling -- addEventListener after Query Selector uske baad wo console hota hai uske parent div ya body html , wo bubble ke tarah bada hota h
+stopPropogation --  ye jo event hai na wo agey nai janey dena hai parent tak
+stopimmediat bhi wohi chiz hai just ki uske phele mein hum allow kar saqte hai ek mein kisi mein rokna hai toh bana h
+prevent default uss chiz jaise anchor tag.. button tag ye sab ka behaviour jo default hai wo rok dega -->
+
+<!-- Semantic HTML refers to syntax that makes the HTML more comprehensible by better defining the different sections and layout of web pages. It makes web pages more informative and adaptable, allowing browsers and search engines to better interpret content. -->
+
+<!-- What is the difference between display:none and visibility:hidden ?
+display: none removes the element completely from the document. It does not take up any space, even though the HTML for it is still in the source code
+ visibility:hidden will hide the element but maintains the space it previously occupied  the tag is not visible-->
+
+<!-- Psuedo Elements : ::after ::before , uske agal bagal le ayga kuch kuch elements jiske liye warna HTML likhna padd jata
+toh yeh sirf wohi elements par kaam karega jisme content hai , input self closing hai toh nai karta h
+Example Name ke agey content="\*" lage dena , tooltip and all after :hover::after
+Psuedo classes are hover, active, disabled,  first-child, nth-child, etc. whereas psuedo elements in css are ::before, ::after, etc.
+
+attr is also same thing that we can get the prop from the element and get it into the css -->
+
+# The box-sizing property allows us to include the padding and border in an element's total width and height
+
+Reac-Native
+
+We have view text touchableOpacity in react native
+we use native animation api
+
+in built navitgation
+
+doesnt not HTML
+
+native api render code for api
+
+zero dom
+
+animated .parallel
+animated . decay
+animated . stagger
+
+animated -> controls specific values
+layout animated -> animates the global layout transaction
+
+settimeout setinterval setimmediate
+There is a async storage in react native where we can store key and value of items
+it can be any object array but we have to JSON. stringify
