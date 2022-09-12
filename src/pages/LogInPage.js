@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/logInPageStyles.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogIn } from "../reducers/getUserOps";
 
 export default function LogInPage() {
   const [loginVals, setLoginVals] = useState({
@@ -8,37 +10,17 @@ export default function LogInPage() {
     password: "",
   });
   const navigate = useNavigate();
+  const dispatchLoginDetails = useDispatch();
+  const { status } = useSelector((state) => state.userLoginAPI);
 
   async function handleLogin(event) {
     event.preventDefault();
-    let userHeader = new Headers();
-
-    userHeader.append("Content-Type", "application/json");
-    const userDetails = JSON.stringify(loginVals);
-    const requestOptions = {
-      method: "POST",
-      headers: userHeader,
-      body: userDetails,
-      redirect: "follow",
-    };
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/user/login",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        if (result.includes("Unable to login")) {
-          alert(result);
-        } else {
-          localStorage.setItem("sessionkey", JSON.parse(result).token);
-          navigate(0);
-          navigate("/DashBoard");
-        }
-      })
-      .catch((error) => {
-        alert("Something Went Wrong!!");
-        console.log(error);
-      });
+    dispatchLoginDetails(userLogIn(JSON.stringify(loginVals)));
+    if (status === "Error") {
+      return alert("Unable to Login");
+    }
+    navigate(0);
+    navigate("/Dashboard");
   }
   const handleRegdirect = () => {
     navigate("/Registration");
