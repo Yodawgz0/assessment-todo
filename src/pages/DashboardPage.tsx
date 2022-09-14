@@ -5,34 +5,28 @@ import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Placeholder from "react-bootstrap/Placeholder";
 import AddTaskPop from "../components/taskMgmtPage/AddTaskPop";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../hooks";
+import axios from "axios";
+
 export default function DashboardPage() {
   const navigate = useNavigate();
-
   const [showAddTaskPop, setShowAddTaskPop] = useState(false);
-
   const handleAddTaskPop = () => setShowAddTaskPop(!showAddTaskPop);
 
-  const todoTask = useSelector((state) => state.todotaskHandler.value);
+  const todoTask = useAppSelector((state) => state.todotaskHandler.value);
 
   async function handleLogout() {
-    let userLogoutHeader = new Headers();
-    userLogoutHeader.append(
-      "Authorization",
-      "Bearer " + localStorage.getItem("sessionkey")
-    );
-
-    const requestOptions = {
-      method: "POST",
-      headers: userLogoutHeader,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://api-nodejs-todolist.herokuapp.com/user/logout",
-      requestOptions
-    )
-      .then((response) => response)
+    await axios
+      .post(
+        "https://api-nodejs-todolist.herokuapp.com/user/logout",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("sessionkey"),
+          },
+        }
+      )
+      .then((response) => console.log(response))
       .then((result) => {
         localStorage.removeItem("sessionkey");
         navigate(0);
@@ -65,11 +59,19 @@ export default function DashboardPage() {
               <>
                 <Card.Text>
                   Number of Tasks done:{" "}
-                  {todoTask.filter((obj) => obj.taskStage === "3").length}
+                  {
+                    todoTask.filter(
+                      (obj: { [key: string]: any }) => obj.taskStage === "3"
+                    ).length
+                  }
                 </Card.Text>
                 <Card.Text>
                   Number of Pending Tasks:{" "}
-                  {todoTask.filter((obj) => obj.taskStage !== "3").length}
+                  {
+                    todoTask.filter(
+                      (obj: { [key: string]: any }) => obj.taskStage !== "3"
+                    ).length
+                  }
                 </Card.Text>
               </>
             ) : (

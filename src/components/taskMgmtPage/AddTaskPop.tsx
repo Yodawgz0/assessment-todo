@@ -4,13 +4,19 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useAppSelector } from "../../hooks";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTask } from "../../reducers/todoTasksSlice";
 
-const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
+interface Props {
+  showAddTaskPop: any;
+  setShowAddTaskPop: any;
+}
+
+const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }: Props) => {
   const dispatchAddTask = useDispatch();
-  const todoStageValues = useSelector((state) => state.todoStageConst.value);
+  const todoStageValues = useAppSelector((state) => state.todoStageConst.value);
   const dayToday = new Date();
   const [addTaskVals, setaddTaskVals] = useState({
     taskName: "",
@@ -25,7 +31,7 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
     setShowAddTaskPop(false);
   };
 
-  const handleAddTaskApi = (event) => {
+  const handleAddTaskApi = (event: any) => {
     event.preventDefault();
     setisLoadingAdd(true);
     dispatchAddTask(addTask(addTaskVals));
@@ -59,7 +65,7 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
                 as="textarea"
                 rows={3}
                 required
-                minLength="10"
+                minLength={10}
                 value={addTaskVals.taskDetails}
                 onChange={(e) =>
                   setaddTaskVals({
@@ -107,8 +113,8 @@ const AddTaskPop = ({ showAddTaskPop, setShowAddTaskPop }) => {
               <DatePicker
                 className="ms-3"
                 selected={addTaskVals.deadline}
-                value={addTaskVals.deadline}
-                onChange={(date) =>
+                value={addTaskVals.deadline.toDateString()}
+                onChange={(date: Date) =>
                   setaddTaskVals({
                     ...addTaskVals,
                     deadline: date,

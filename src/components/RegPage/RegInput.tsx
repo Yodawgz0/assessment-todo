@@ -1,6 +1,15 @@
 import React from "react";
 import "../../styles/regPageStyle.scss";
 
+interface Props {
+  title: string;
+  formVals: { [key: string]: string };
+  setFormVals: any;
+  mandateText: boolean;
+  pattern: string;
+  type: string;
+}
+
 export default function RegInput({
   title,
   formVals,
@@ -8,7 +17,7 @@ export default function RegInput({
   mandateText,
   pattern,
   type = "text",
-}) {
+}: Props) {
   return (
     <div className="regContainer__form__element">
       <label
@@ -22,10 +31,9 @@ export default function RegInput({
       <input
         className="regContainer__form__element__input"
         type={type}
-        name={title}
         id={title}
-        maxLength="30"
-        minLength={type === "Password" ? "8" : "3"}
+        maxLength={30}
+        minLength={type === "Password" ? 8 : 3}
         pattern={pattern}
         required={mandateText}
         value={formVals[title.toLowerCase()]}

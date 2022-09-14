@@ -1,12 +1,19 @@
 import React from "react";
 import "../../styles/taskPageStyle.scss";
 
+interface Props {
+  itemDetails: { [key: string]: string };
+  onArrowSelect: any;
+  handleDeleteTask: Function;
+  handleAddTaskPop: Function;
+}
+
 export default function DraggableFeatures({
   itemDetails,
   onArrowSelect,
   handleDeleteTask,
   handleAddTaskPop,
-}) {
+}: Props) {
   return (
     <div className="mt-3">
       <button

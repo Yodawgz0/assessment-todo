@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import todoTaskReducer from "./reducers/todoTasksSlice";
 import todoStageListReducer from "./reducers/stageListReducer";
 import userLoginReducer from "./reducers/getUserOps";
-export default configureStore({
+const store = configureStore({
   reducer: {
     todotaskHandler: todoTaskReducer,
     todoStageConst: todoStageListReducer,
@@ -13,3 +13,7 @@ export default configureStore({
       serializableCheck: false,
     }),
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export default store;

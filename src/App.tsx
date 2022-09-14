@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LogInPage from "./pages/LogInPage";
 import DashboardPage from "./pages/DashboardPage";
 import TaskMainPage from "./pages/TaskMainPage";
+import * as React from "react";
 
 function App() {
   const isAuthenticated = localStorage.getItem("sessionkey");

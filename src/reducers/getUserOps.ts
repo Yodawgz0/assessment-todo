@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   loginToken: "",
@@ -7,14 +8,17 @@ const initialState = {
   error: "",
 };
 
-export const userLogIn = createAsyncThunk("user/LogIn", async (loginVals) => {
-  const response = await axios.post(
-    "https://api-nodejs-todolist.herokuapp.com/user/login",
-    loginVals,
-    { headers: { "Content-Type": "application/json" } }
-  );
-  return response;
-});
+export const userLogIn = createAsyncThunk(
+  "user/LogIn",
+  async (loginVals: string) => {
+    const response = await axios.post(
+      "https://api-nodejs-todolist.herokuapp.com/user/login",
+      loginVals,
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response;
+  }
+);
 
 const userSlice = createSlice({
   name: "userLogin",
@@ -27,13 +31,12 @@ const userSlice = createSlice({
       .addCase(userLogIn.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(userLogIn.fulfilled, (state, action) => {
-        console.log(action.payload.data);
+      .addCase(userLogIn.fulfilled, (state, action: PayloadAction<any>) => {
         state.loginToken = action.payload.data.token;
-        state.status = "idle";
+        state.status = "success";
         localStorage.setItem("sessionkey", state.loginToken);
       })
-      .addCase(userLogIn.rejected, (state, action) => {
+      .addCase(userLogIn.rejected, (state, action: PayloadAction<any>) => {
         state.status = "Error";
         console.log(action);
       });

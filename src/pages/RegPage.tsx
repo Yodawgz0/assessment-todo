@@ -2,45 +2,29 @@ import React, { useState } from "react";
 import "../styles/regPageStyle.scss";
 import RegInput from "../components/RegPage/RegInput";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const RegPage = () => {
   const [formVals, setFormVals] = useState({
     name: "",
-    Username: "",
+    username: "",
     email: "",
-    ContactNo: "",
+    contactNo: "",
     password: "",
   });
   const navigate = useNavigate();
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    let userHeader = new Headers();
-    userHeader.append("Content-Type", "application/json");
-    const userDetails = JSON.stringify(formVals);
-    const requestOptions = {
-      method: "POST",
-      headers: userHeader,
-      body: userDetails,
-      redirect: "follow",
-    };
-    await fetch(
+    const result = await axios.post(
       "https://api-nodejs-todolist.herokuapp.com/user/register",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        if (result.includes("E11000")) {
-          alert("user already exists! Please login!");
-          navigate("/LogIn");
-        } else {
-          localStorage.setItem("sessionkey", JSON.parse(result).token);
-          navigate(0);
-          navigate("/DashBoard");
-        }
-      })
-      .catch((error) => {
-        alert("Something Went Wrong!!");
-        console.log(error);
-      });
+      JSON.stringify(formVals),
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if (result.status === 201) {
+      localStorage.setItem("sessionkey", result.data.token);
+      navigate(0);
+      navigate("/DashBoard");
+    }
   }
 
   return (
@@ -53,12 +37,15 @@ const RegPage = () => {
             setFormVals={setFormVals}
             mandateText={true}
             pattern="[A-Za-z]*"
+            type={""}
           />
           <RegInput
             title="Username"
             formVals={formVals}
             setFormVals={setFormVals}
             mandateText={true}
+            pattern=".+"
+            type={""}
           />
           <RegInput
             title="Email"
@@ -66,6 +53,7 @@ const RegPage = () => {
             setFormVals={setFormVals}
             mandateText={true}
             pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            type={""}
           />
           <RegInput
             title="ContactNo"
@@ -81,6 +69,7 @@ const RegPage = () => {
             setFormVals={setFormVals}
             mandateText={true}
             type="Password"
+            pattern=".+"
           />
           <div className="regContainer__form__element">
             <label className="regContainer__form__element__label">
@@ -98,6 +87,8 @@ const RegPage = () => {
           <button
             aria-label="RegisterButton"
             className="regContainer__form__submitButton"
+            id="registerButton"
+            type="submit"
           >
             <span className="regContainer__form__submitButton__text">
               Register

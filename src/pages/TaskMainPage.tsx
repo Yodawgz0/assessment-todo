@@ -4,7 +4,8 @@ import "../styles/taskPageStyle.scss";
 import DraggableFeatures from "../components/taskMgmtPage/DraggableFeatures";
 import { Link } from "react-router-dom";
 import { BsFillTrashFill } from "react-icons/bs";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../hooks";
+
 import {
   changeStageTask,
   changeTaskName,
@@ -12,30 +13,29 @@ import {
 } from "../reducers/todoTasksSlice";
 
 export default function TaskMainPage() {
-  const columnsSet = useSelector((state) => state.todoStageConst.value);
-  const todoTaskList = useSelector((state) => state.todotaskHandler.value);
+  const columnsSet = useAppSelector((state) => state.todoStageConst.value);
+  const todoTaskList = useAppSelector((state) => state.todotaskHandler.value);
   const [showAddTaskPop, setShowAddTaskPop] = useState("");
   const [editTaskVals, setEditTaskVals] = useState("");
 
-  const handleAddTaskPop = (taskIDval) => {
+  const handleAddTaskPop = (taskIDval: string) => {
     setEditTaskVals("");
     setShowAddTaskPop(taskIDval);
   };
-  const dispatchtaskMainPage = useDispatch();
-  const handleDeleteTask = (itemDetails) => {
+  const dispatchtaskMainPage = useAppDispatch();
+  const handleDeleteTask = (itemDetails: string) => {
     dispatchtaskMainPage(delTask(itemDetails));
   };
-  const handleEditForm = (oldTaskName, newTaskName) => {
+  const handleEditForm = (oldTaskName: string, newTaskName: string) => {
     dispatchtaskMainPage(
       changeTaskName({
         taskName: oldTaskName,
         newtaskName: newTaskName,
       })
     );
-    console.log(todoTaskList);
   };
   useEffect(() => {}, [todoTaskList, showAddTaskPop]);
-  const onArrowSelect = (arrowType, itemID) => {
+  const onArrowSelect = (arrowType: string, itemID: string) => {
     todoTaskList.forEach((element) => {
       if (element.taskName === itemID) {
         dispatchtaskMainPage(
@@ -50,7 +50,7 @@ export default function TaskMainPage() {
       }
     });
   };
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: { [key: string]: any }) => {
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
 

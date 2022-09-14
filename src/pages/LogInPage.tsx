@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../styles/logInPageStyles.scss";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogIn } from "../reducers/getUserOps";
+import { useAppDispatch } from "../hooks";
 
 export default function LogInPage() {
   const [loginVals, setLoginVals] = useState({
@@ -10,18 +11,17 @@ export default function LogInPage() {
     password: "",
   });
   const navigate = useNavigate();
-  const dispatchLoginDetails = useDispatch();
-  const { status } = useSelector((state) => state.userLoginAPI);
+  const dispatchLoginDetails = useAppDispatch();
+  //const { status } = useSelector((state) => state.userLoginAPI);
 
-  async function handleLogin(event) {
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatchLoginDetails(userLogIn(JSON.stringify(loginVals)));
-    if (status === "Error") {
-      return alert("Unable to Login");
-    }
-    navigate(0);
-    navigate("/Dashboard");
+
+    // navigate(0);
+    // navigate("/Dashboard");
   }
+
   const handleRegdirect = () => {
     navigate("/Registration");
   };
@@ -41,10 +41,10 @@ export default function LogInPage() {
               type="text"
               name="Email"
               id="Email"
-              minLength="7"
+              minLength={7}
               required
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-              value={loginVals["Email"]}
+              value={loginVals["email"]}
               onChange={(e) =>
                 setLoginVals({ ...loginVals, email: e.target.value })
               }
@@ -59,9 +59,9 @@ export default function LogInPage() {
               type="password"
               name="Password"
               id="Password"
-              minLength="8"
+              minLength={8}
               required
-              value={loginVals["Password"]}
+              value={loginVals["password"]}
               onChange={(e) =>
                 setLoginVals({ ...loginVals, password: e.target.value })
               }
